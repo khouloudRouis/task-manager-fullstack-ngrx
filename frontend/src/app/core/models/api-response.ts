@@ -4,4 +4,4 @@ export interface ApiResponse<T> {
   errors?: string;
   type: MessageType;
 } 
-export type MessageType = 'success' | 'error' | 'info';
+export type MessageType = 'SUCCESS' | 'ERROR' | 'INFO';

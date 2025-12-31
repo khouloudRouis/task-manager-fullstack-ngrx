@@ -14,9 +14,9 @@ export class ToastComponent {
   bgColor = computed(() => {
     const type = this.toastService.toast()?.type;
     switch (type) {
-      case 'success': return 'bg-green-100/70 text-green-800';
-      case 'error': return 'bg-red-100/70 text-red-800';
-      case 'info': return 'bg-blue-100/70 text-blue-800';
+      case 'SUCCESS': return 'bg-green-100/70 text-green-800';
+      case 'ERROR': return 'bg-red-100/70 text-red-800';
+      case 'INFO': return 'bg-blue-100/70 text-blue-800';
       default: return 'bg-gray-100/70 text-gray-800';
     }
   });

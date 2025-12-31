@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ApiError> handleNotFound(ResourceNotFoundException ex) {
 		log.warn("{}", ex.getMessage());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND)
-				.body(new ApiError(ex.getMessage(), null, LocalDateTime.now(), ApiMessage.ERROR));
+				.body(new ApiError(ex.getMessage(), null, LocalDateTime.now(), MessageType.ERROR));
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
@@ -33,20 +33,20 @@ public class GlobalExceptionHandler {
 		Map<String, String> errors = ex.getBindingResult().getFieldErrors().stream()
 				.collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
 		return ResponseEntity.badRequest()
-				.body(new ApiError(ApiMessage.INVALID_TASK_DATA, errors, LocalDateTime.now(), ApiMessage.ERROR));
+				.body(new ApiError(ApiMessage.INVALID_TASK_DATA, errors, LocalDateTime.now(), MessageType.ERROR));
 	}
 
 	@ExceptionHandler(MissingRequestHeaderException.class)
 	public ResponseEntity<ApiError> handleHeader(MissingRequestHeaderException ex) {
 		log.error("{}", ex.getMessage());
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-				.body(new ApiError(ApiMessage.UNAUTHORIZED_ACCESS, null, LocalDateTime.now(), ApiMessage.ERROR));
+				.body(new ApiError(ApiMessage.UNAUTHORIZED_ACCESS, null, LocalDateTime.now(), MessageType.ERROR));
 	}
 
 	@ExceptionHandler(DataAccessException.class)
 	public ResponseEntity<ApiError> handleDataAccess(DataAccessException ex) {
 		log.error("Database error", ex);
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-				.body(new ApiError(ApiMessage.DATABASE_ERROR, null, LocalDateTime.now(), ApiMessage.ERROR));
+				.body(new ApiError(ApiMessage.DATABASE_ERROR, null, LocalDateTime.now(), MessageType.ERROR));
 	}
 }

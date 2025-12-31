@@ -22,10 +22,6 @@ public final class ApiMessage {
 	    public static final String UNEXPECTED_ERROR = "Unexpected error occurred";
 	    public static final String DATABASE_ERROR = "Database operation failed ";
 	    
-	    // ======= MESSAGE TYPE =====
-	    public static final String SUCCESS = "success";
-	    public static final String ERROR = "error";
-	    public static final String INFO = "info";
  
 
 }
