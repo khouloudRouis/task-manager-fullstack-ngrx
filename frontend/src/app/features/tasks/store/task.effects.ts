@@ -6,6 +6,7 @@ import { TaskApiService } from '../../../core/api/task-api.service';
 import * as TaskActions from './task.actions';
 import { ToastService } from '../../../core/services/toast.service';
 
+
 @Injectable()
 export class TaskEffects {
   private actions$ = inject(Actions);
@@ -43,4 +44,50 @@ export class TaskEffects {
     )
   );
 
+  addTask$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TaskActions.addTask),
+      switchMap((task) =>
+        this.taskApi.createTask(task).pipe(
+          tap(response => this.toastService.show(response.message, response.type)),
+          map(response => TaskActions.addTaskSuccess({ taskId: response.data.id })),
+          catchError(error => {
+            this.toastService.show(error.message, error.type);
+            return of(TaskActions.addTaskFailure({ error: error.message }));
+          })
+        )
+      )
+    )
+  );
+
+  updateTaskStatus$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TaskActions.updateTaskStatus), 
+      switchMap(({ taskId, newStatus }) =>
+        this.taskApi.updateTaskStatus(taskId, newStatus).pipe(
+          tap(response => this.toastService.show(response.message, response.type)),
+          map(() => TaskActions.updateTaskStatusSuccess({ taskId, newStatus })),
+          catchError(error => {
+            this.toastService.show(error.message, error.type);
+            return of(TaskActions.updateTaskStatusFailure({ error: error.message }));
+          })
+        )
+      )
+    )
+  );
+ updateTask$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TaskActions.updateTask),
+      switchMap(({ task }) =>
+        this.taskApi.updateTask(task.id, task).pipe(
+          tap(response => this.toastService.show(response.message, response.type)),
+          map(() => TaskActions.updateTaskSuccess({ task })),
+          catchError(error => {
+            this.toastService.show(error.message, error.type);
+            return of(TaskActions.updateTaskFailure({ error: error.message }));
+          })
+        )
+      )
+    )
+  );  
 }

@@ -1,0 +1,38 @@
+<div class="border-l-4 p-2 rounded transition cursor-pointer" [ngClass]="{
+    'border-blue-500': status === 'TODO',
+    'border-orange-500 hover:bg-orange-50': status === 'DOING',
+    'border-green-500 hover:bg-green-50': status === 'DONE'
+  }">
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+        <div>
+            <label for="title" class="block mb-2.5 text-sm font-medium text-heading">Title</label>
+            <input type="text" id="title" formControlName="title" class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2
+         text-sm text-gray-900 placeholder-gray-400
+         focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20
+         outline-none transition"
+                [ngClass]="taskForm.get('title')?.invalid && taskForm.get('title')?.touched ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500/20'"
+                placeholder="Enter title" />
+        </div>
+        <div>
+            <label for="description" class="block mb-2.5 text-sm font-medium text-heading">Description</label>
+            <textarea id="description" formControlName="description" class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2
+         text-sm text-gray-900 placeholder-gray-400
+         focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20
+         outline-none transition"
+                [ngClass]="taskForm.get('description')?.invalid && taskForm.get('description')?.touched ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500/20'"
+                placeholder="Enter description"></textarea>
+        </div>
+        <div class="flex justify-end gap-3">
+            <button type="button" class="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium
+           text-gray-700 hover:bg-gray-100 transition" (click)="cancelled.emit()">
+                Cancel
+            </button>
+
+            <button type="submit" class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium
+           text-white hover:bg-indigo-700 transition" [disabled]="taskForm.invalid">
+                Save
+            </button>
+        </div>
+    </form>
+
+</div>

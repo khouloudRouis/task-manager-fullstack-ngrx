@@ -6,20 +6,28 @@ import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { Task, TaskStatus } from '../../../../core/models/task';
 import { Store } from '@ngrx/store';
-import { updateTaskStatus, reorderTasks } from '../../store/task.actions';
+import { updateTaskStatus, reorderTasks, addTask, updateTask } from '../../store/task.actions';
+import { TaskFormComponent } from '../task-form/task-form.component';
 
 @Component({
   selector: 'app-task-lane',
   standalone: true,
-  imports: [TaskCardComponent, CdkDropList, CdkDrag, CommonModule],
+  imports: [TaskCardComponent,
+    CdkDropList,
+    CdkDrag,
+    CommonModule,
+    TaskFormComponent],
   templateUrl: './task-lane.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaskLaneComponent {
+
   private readonly store = inject(Store);
   connectedLaneIds = ['TODO', 'DOING', 'DONE'];
   @Input() selectTasksByStatus$!: Observable<Task[]>;
   @Input() status!: TaskStatus;
+  task: Task | undefined;
+  showTaskForm = false;
 
   drop({ item, previousIndex, currentIndex }: CdkDragDrop<Task[]>) {
     const task = item.data as Task;
@@ -42,8 +50,24 @@ export class TaskLaneComponent {
     }
   }
 
-  addTask(status: TaskStatus): void {
-    // TODO: Implement task creation functionality
-    // This should dispatch an addTask action to the store
+  save(event: Partial<Task>): void {
+    this.showTaskForm = !this.showTaskForm;
+    if (event.id) {
+      console.log('updating task', event);
+      this.store.dispatch(updateTask({ task: event as Task }));
+    } else {
+      const payload = { status: this.status || 'TODO' as TaskStatus, title: event.title || '', description: event.description || '' };
+      this.store.dispatch(addTask(payload));
+    }
+  }
+
+  onEditTask(event: Task): void {
+    this.showTaskForm = true
+    this.task = event as Task | undefined;
+  }
+
+  onAddTask(): void {
+    this.showTaskForm = true
+    this.task = undefined;
   }
 }

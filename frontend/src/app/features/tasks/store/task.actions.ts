@@ -18,15 +18,41 @@ export const updateTaskStatus = createAction(
   '[Tasks] Update Task Status',
   props<{ taskId: string; newStatus: TaskStatus; newOrder?: number }>()
 );
+export const updateTaskStatusSuccess = createAction(
+  '[Tasks API] Update Task Status Success',
+  props<{ taskId: string; newStatus: TaskStatus }>()
+);
+export const updateTaskStatusFailure = createAction(
+  '[Tasks API] Update Task Status Failure',
+  props<{ error: string }>()
+);
 
 export const updateTask = createAction(
   '[Tasks] Update Task',
   props<{ task: Task }>()
 );
+export const updateTaskSuccess = createAction(
+  '[Tasks API] Update Task Success',
+  props<{ task: Task }>()
+);
+export const updateTaskFailure = createAction(
+  '[Tasks API] Update Task Failure',
+  props<{ error: string }>()
+);
 
 export const addTask = createAction(
   '[Tasks] Add Task',
-  props<{ title: string; status: TaskStatus }>()
+  props<{ title: string; status: TaskStatus, description: string
+   }>()
+);
+
+export const addTaskSuccess = createAction(
+  '[Tasks API] Add Task Success',
+  props<{ taskId: string }>()
+);
+export const addTaskFailure = createAction(
+  '[Tasks API] Add Task Failure',
+  props<{ error: string }>()
 );
 
 export const deleteTask = createAction(

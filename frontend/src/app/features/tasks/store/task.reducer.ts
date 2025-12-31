@@ -1,7 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { initialTasksState } from './tasks.state';
 import { addTask, deleteTask, loadTasks, loadTasksSuccess, loadTasksFailure, reorderTasks, updateTask, updateTaskStatus } from './task.actions';
-import { TaskStatus } from '../../../core/models/task';
 
 export const taskReducer = createReducer(
     initialTasksState,
@@ -39,7 +38,7 @@ export const taskReducer = createReducer(
         }
         
         // Update the moved task
-        let updatedTasks = state.tasks.map(task => {
+        const updatedTasks = state.tasks.map(task => {
             if (task.id === taskId) {
                 return { ...task, status: newStatus, order };
             }
@@ -72,12 +71,12 @@ export const taskReducer = createReducer(
         return { ...state, tasks: updatedTasks };
     }),
 
-    on(addTask, (state, { title, status }) => {
+    on(addTask, (state, { title, status, description }) => {
         const newTask = {
             id: Date.now().toString(),
             title,
             status,
-            description: '',
+            description,
             order: state.tasks.filter(t => t.status === status).length,
             createdAt: new Date().toISOString()
         };

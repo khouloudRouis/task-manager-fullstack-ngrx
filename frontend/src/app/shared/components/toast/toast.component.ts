@@ -1,4 +1,4 @@
-import { Component, computed } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { ToastService } from '../../../core/services/toast.service';
 import { CommonModule } from '@angular/common';
 
@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
   standalone: true
 })
 export class ToastComponent {
-  constructor(public toastService: ToastService) { }
+ toastService = inject(ToastService);
 
   bgColor = computed(() => {
     const type = this.toastService.toast()?.type;
