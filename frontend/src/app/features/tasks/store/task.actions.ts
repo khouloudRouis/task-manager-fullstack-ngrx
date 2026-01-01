@@ -1,7 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { Task, TaskStatus } from '../../../core/models/task';
 
-// Action naming convention: [Source] Event
+
 export const loadTasks = createAction('[Tasks] Load Tasks');
 
 export const loadTasksSuccess = createAction(
@@ -18,10 +18,12 @@ export const updateTaskStatus = createAction(
   '[Tasks] Update Task Status',
   props<{ taskId: string; newStatus: TaskStatus; newOrder?: number }>()
 );
+
 export const updateTaskStatusSuccess = createAction(
   '[Tasks API] Update Task Status Success',
   props<{ taskId: string; newStatus: TaskStatus }>()
 );
+
 export const updateTaskStatusFailure = createAction(
   '[Tasks API] Update Task Status Failure',
   props<{ error: string }>()
@@ -42,8 +44,7 @@ export const updateTaskFailure = createAction(
 
 export const addTask = createAction(
   '[Tasks] Add Task',
-  props<{ title: string; status: TaskStatus, description: string
-   }>()
+  props<{ task: Task }>()
 );
 
 export const addTaskSuccess = createAction(

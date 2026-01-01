@@ -6,3 +6,8 @@ export interface TasksState {
   loading: boolean;
   error: string | null;
 }
+export const initialTasksState: TasksState = {
+  tasks: [],
+  loading: false,
+  error: null
+};

@@ -47,7 +47,7 @@ export class TaskEffects {
   addTask$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TaskActions.addTask),
-      switchMap((task) =>
+      switchMap(({task}) =>
         this.taskApi.createTask(task).pipe(
           tap(response => this.toastService.show(response.message, response.type)),
           map(response => TaskActions.addTaskSuccess({ taskId: response.data.id })),
@@ -75,6 +75,7 @@ export class TaskEffects {
       )
     )
   );
+
  updateTask$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TaskActions.updateTask),

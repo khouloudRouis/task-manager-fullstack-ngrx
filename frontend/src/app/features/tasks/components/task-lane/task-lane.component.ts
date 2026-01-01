@@ -53,11 +53,10 @@ export class TaskLaneComponent {
   save(event: Partial<Task>): void {
     this.showTaskForm = !this.showTaskForm;
     if (event.id) {
-      console.log('updating task', event);
       this.store.dispatch(updateTask({ task: event as Task }));
     } else {
-      const payload = { status: this.status || 'TODO' as TaskStatus, title: event.title || '', description: event.description || '' };
-      this.store.dispatch(addTask(payload));
+      const payload = { status: this.status as TaskStatus, title: event.title || '', description: event.description || '' };
+      this.store.dispatch(addTask({ task: payload as Task }));
     }
   }
 
