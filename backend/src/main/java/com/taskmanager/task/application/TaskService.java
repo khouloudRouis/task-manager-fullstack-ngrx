@@ -26,7 +26,7 @@ public class TaskService {
 		return repository.findByUserId(userId).stream().map(mapper::toResponse).toList();
 	}
 
-	public TaskResponse getById(UUID userId, long taskId) {
+	public TaskResponse getById(UUID userId, Long taskId) {
 		Task task = repository.findByIdAndUserId(taskId, userId)
 				.orElseThrow(() -> new ResourceNotFoundException(String.format("%s %d",ApiMessage.TASK_NOT_FOUND, taskId)));
 		return mapper.toResponse(task);
@@ -44,7 +44,7 @@ public class TaskService {
 	}
 
 	@Transactional
-	public TaskResponse update(UUID userId,long taskId, TaskUpsertRequest request) {
+	public TaskResponse update(UUID userId, Long taskId, TaskUpsertRequest request) {
 		Task task = repository.findByIdAndUserId(taskId, userId)
 				.orElseThrow(() -> new ResourceNotFoundException(String.format("%s %d",ApiMessage.TASK_NOT_FOUND, taskId)));
 
@@ -64,7 +64,7 @@ public class TaskService {
 	}
 
 	@Transactional
-	public void delete(UUID userId, long taskId) {
+	public void delete(UUID userId, Long taskId) {
 		Task task = repository.findByIdAndUserId(taskId,userId)
 				.orElseThrow(() -> new ResourceNotFoundException(ApiMessage.TASK_NOT_FOUND + " " + taskId));
 		repository.delete(task);

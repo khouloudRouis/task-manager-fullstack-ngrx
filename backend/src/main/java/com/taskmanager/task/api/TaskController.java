@@ -39,7 +39,7 @@ public class TaskController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<ApiResponse<TaskResponse>> getTask(@RequestHeader("X-USER-ID") UUID userId,
-			@PathVariable long id) {
+			@PathVariable Long id) {
 		var taskResponse = service.getById(userId, id);
 		var apiResponse = new ApiResponse<>(taskResponse, ApiMessage.TASK_RETRIEVED,  MessageType.SUCCESS);
 		return ResponseEntity.ok(apiResponse);
@@ -54,14 +54,14 @@ public class TaskController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<ApiResponse<Object>> delete(@PathVariable long id, @RequestHeader("X-USER-ID") UUID userId) {
+	public ResponseEntity<ApiResponse<Object>> delete(@PathVariable Long id, @RequestHeader("X-USER-ID") UUID userId) {
 		service.delete(userId, id);
 		var apiResponse = new ApiResponse<>(null, ApiMessage.TASK_DELETED, MessageType.SUCCESS);
 		return ResponseEntity.ok(apiResponse);
 	}
 
 	@PatchMapping("/{id}/status")
-	public ResponseEntity<ApiResponse<TaskResponse>> updateStatus(@PathVariable long id,
+	public ResponseEntity<ApiResponse<TaskResponse>> updateStatus(@PathVariable Long id,
 			@RequestHeader("X-USER-ID") UUID userId, @Valid @RequestBody TaskStatusUpdateRequest request) {
 		var apiResponse = new ApiResponse<>(service.updateStatus(userId, id, request.status()),
 				ApiMessage.TASK_UPDATED,  MessageType.SUCCESS);
@@ -69,7 +69,7 @@ public class TaskController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<ApiResponse<TaskResponse>> update(@PathVariable long id,
+	public ResponseEntity<ApiResponse<TaskResponse>> update(@PathVariable Long id,
 			@RequestHeader("X-USER-ID") UUID userId, @Valid @RequestBody TaskUpsertRequest request) {
 		var apiResponse = new ApiResponse<>(service.update(userId, id, request), ApiMessage.TASK_UPDATED,  MessageType.SUCCESS);
 		return ResponseEntity.ok(apiResponse);
