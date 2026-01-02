@@ -23,7 +23,7 @@ public class TaskService {
 	private final TaskMapper mapper;
 
 	public List<TaskResponse> getAll(UUID userId) {
-		return repository.findByUserId(userId).stream().map(mapper::toResponse).toList();
+		return repository.findByUserIdOrderByOrder(userId).stream().map(mapper::toResponse).toList();
 	}
 
 	public TaskResponse getById(UUID userId, Long taskId) {
@@ -51,6 +51,7 @@ public class TaskService {
 		task.setTitle(request.title());
 		task.setDescription(request.description());
 		task.setStatus(request.status());
+		task.setOrder(request.order());
 		repository.save(task);
 		return mapper.toResponse(task);
 	}

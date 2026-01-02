@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Task, TaskStatus } from '../../../core/models/task';
+import { Task } from '../../../core/models/task';
 
 
 export const loadTasks = createAction('[Tasks] Load Tasks');
@@ -14,20 +14,6 @@ export const loadTasksFailure = createAction(
   props<{ error: string }>()
 );
 
-export const updateTaskStatus = createAction(
-  '[Tasks] Update Task Status',
-  props<{ taskId: string; newStatus: TaskStatus; newOrder?: number }>()
-);
-
-export const updateTaskStatusSuccess = createAction(
-  '[Tasks API] Update Task Status Success',
-  props<{ taskId: string; newStatus: TaskStatus }>()
-);
-
-export const updateTaskStatusFailure = createAction(
-  '[Tasks API] Update Task Status Failure',
-  props<{ error: string }>()
-);
 
 export const updateTask = createAction(
   '[Tasks] Update Task',
@@ -71,7 +57,3 @@ export const deleteTaskFailure = createAction(
   props<{ error: string }>()
 );
 
-export const reorderTasks = createAction(
-  '[Tasks] Reorder Tasks',
-  props<{ taskIdsInOrder: string[]; status: TaskStatus }>()
-);

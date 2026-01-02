@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
   standalone: true
 })
 export class ToastComponent {
- toastService = inject(ToastService);
+  toastService = inject(ToastService);
 
   bgColor = computed(() => {
     const type = this.toastService.toast()?.type;

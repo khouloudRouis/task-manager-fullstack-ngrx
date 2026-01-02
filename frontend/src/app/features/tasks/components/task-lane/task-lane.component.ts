@@ -1,13 +1,14 @@
-import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Signal, inject, signal, OnInit } from '@angular/core';
 import { TaskCardComponent } from '../task-card/task-card.component';
 import { CommonModule } from '@angular/common';
-import { CdkDropList, CdkDragDrop, moveItemInArray, CdkDrag } from '@angular/cdk/drag-drop';
-import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { CdkDropList, CdkDragDrop, CdkDrag } from '@angular/cdk/drag-drop';
 import { Task, TaskStatus } from '../../../../core/models/task';
 import { Store } from '@ngrx/store';
-import { updateTaskStatus, reorderTasks, addTask, updateTask } from '../../store/task.actions';
+import { addTask, updateTask } from '../../store/task.actions';
 import { TaskFormComponent } from '../task-form/task-form.component';
+import { TaskUtils } from '../../../../shared/utils/task-util';
+import { selectTasksByStatus } from '../../store/task.selectors';
+
 
 @Component({
   selector: 'app-task-lane',
@@ -20,43 +21,49 @@ import { TaskFormComponent } from '../task-form/task-form.component';
   templateUrl: './task-lane.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TaskLaneComponent {
+export class TaskLaneComponent implements OnInit {
 
-  private readonly store = inject(Store);
-  connectedLaneIds = ['TODO', 'DOING', 'DONE'];
-  @Input() selectTasksByStatus$!: Observable<Task[]>;
   @Input() status!: TaskStatus;
+  tasksByStatus: Signal<Task[]> = signal([]);
+
+  connectedLaneIds = ['TODO', 'DOING', 'DONE'];
+  tasks!: Task[];
   task: Task | undefined;
   showTaskForm = false;
 
-  drop({ item, previousIndex, currentIndex }: CdkDragDrop<Task[]>) {
-    const task = item.data as Task;
-    if (!task) return;
+  private readonly store = inject(Store);
 
-    if (task.status === this.status) {
-      if (previousIndex === currentIndex) return;
-
-      this.selectTasksByStatus$.pipe(take(1)).subscribe(tasks => {
-        const ids = tasks.map(t => t.id);
-        moveItemInArray(ids, previousIndex, currentIndex);
-        this.store.dispatch(
-          reorderTasks({ taskIdsInOrder: ids, status: this.status })
-        );
-      });
-    } else {
-      this.store.dispatch(
-        updateTaskStatus({ taskId: task.id, newStatus: this.status })
-      );
-    }
+  ngOnInit(){
+   this.store.select(selectTasksByStatus(this.status)).subscribe(
+    tasks => this.tasks = tasks
+   )
+    
   }
 
-  save(event: Partial<Task>): void {
+  onDrop(event: CdkDragDrop<Task[]>) {
+    const movedTask = { ...event.item.data } as Task;
+    if (movedTask.status !== this.status)
+      movedTask.status = this.status; 
+      const prev = this.tasks[event.currentIndex - 1];
+      const next =  this.tasks[event.currentIndex + 1]; 
+      movedTask.order = TaskUtils.calculateOrder(prev, next); 
+      this.store.dispatch(updateTask({ task: movedTask }));
+  }
+
+  onSave(event: Partial<Task>): void {
     this.showTaskForm = !this.showTaskForm;
     if (event.id) {
       this.store.dispatch(updateTask({ task: event as Task }));
-    } else {
-      const payload = { status: this.status as TaskStatus, title: event.title || '', description: event.description || '' };
-      this.store.dispatch(addTask({ task: payload as Task }));
+    } else { 
+        const prev = TaskUtils.lastTask(this.tasks);
+        const order = (prev?.order ?? 0) + 100;
+        const payload = {
+          status: this.status as TaskStatus,
+          title: event.title || '',
+          description: event.description || '',
+          order: order
+        };
+        this.store.dispatch(addTask({ task: payload as Task }));
     }
   }
 

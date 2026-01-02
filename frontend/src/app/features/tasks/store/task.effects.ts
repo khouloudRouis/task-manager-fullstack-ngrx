@@ -60,22 +60,6 @@ export class TaskEffects {
     )
   );
 
-  updateTaskStatus$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(TaskActions.updateTaskStatus), 
-      switchMap(({ taskId, newStatus }) =>
-        this.taskApi.updateTaskStatus(taskId, newStatus).pipe(
-          tap(response => this.toastService.show(response.message, response.type)),
-          map(() => TaskActions.updateTaskStatusSuccess({ taskId, newStatus })),
-          catchError(error => {
-            this.toastService.show(error.message, error.type);
-            return of(TaskActions.updateTaskStatusFailure({ error: error.message }));
-          })
-        )
-      )
-    )
-  );
-
  updateTask$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TaskActions.updateTask),

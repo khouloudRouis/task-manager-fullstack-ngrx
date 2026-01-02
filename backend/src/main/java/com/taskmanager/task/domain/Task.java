@@ -48,6 +48,9 @@ public class Task {
 
 	@Column(nullable = false)
 	private Instant updatedAt;
+	
+	@Column(name = "order_task")  
+	private Long  order; 
 
 	@PrePersist
 	void onCreate() {

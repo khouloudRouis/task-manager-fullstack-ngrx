@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
-	public List<Task> findByUserId(UUID userId);
+	public List<Task> findByUserIdOrderByOrder(UUID userId);
 	public Optional<Task> findByIdAndUserId(long id ,UUID userId);
 	
 }

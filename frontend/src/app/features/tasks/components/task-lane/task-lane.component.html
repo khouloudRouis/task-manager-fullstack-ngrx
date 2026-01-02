@@ -5,17 +5,15 @@
       + Add
     </button>
   </div>
-  <div cdkDropList [id]="status" [cdkDropListConnectedTo]="connectedLaneIds" (cdkDropListDropped)="drop($event)"
+  <div cdkDropList [id]="status" [cdkDropListConnectedTo]="connectedLaneIds" (cdkDropListDropped)="onDrop($event)"
     class="flex flex-col gap-2 flex-1 overflow-y-auto min-h-0">
-    @for (task of (selectTasksByStatus$ | async); track task.id) {
-    <app-task-card cdkDrag [cdkDragData]="task"
-     [task]="task" 
-     (edit)="onEditTask(task)"
-     class="bg-white p-3 rounded shadow flex-shrink-0">
+    @for (task of tasks; track task.id) {
+    <app-task-card cdkDrag [cdkDragData]="task" [task]="task" (edit)="onEditTask(task)"
+      class="bg-white p-3 rounded shadow flex-shrink-0">
     </app-task-card>
     }
     @if (showTaskForm) {
-    <app-task-form class="bg-white p-3 rounded shadow flex-shrink-0" (submitForm)="save($event)"
+    <app-task-form class="bg-white p-3 rounded shadow flex-shrink-0" (submitForm)="onSave($event)"
       (cancelled)="showTaskForm = false" [task]="task" [status]="status"></app-task-form>
     }
   </div>

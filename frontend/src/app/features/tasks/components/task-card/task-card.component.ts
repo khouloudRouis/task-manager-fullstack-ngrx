@@ -14,6 +14,7 @@ import { deleteTask } from '../../store/task.actions';
 export class TaskCardComponent {
   @Input() task!: Task;
   @Output() edit = new EventEmitter<void>();
+  
   private readonly store = inject(Store);
 
   onDelete() {
