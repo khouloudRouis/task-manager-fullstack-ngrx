@@ -1,14 +1,14 @@
-import { Component } from '@angular/core';
-import { TasksBoardComponent } from './features/tasks/pages/tasks-board/tasks-board.component';
+import { Component, signal } from '@angular/core';
 import { ToastComponent } from './shared/components/toast/toast.component';
+import { RouterOutlet } from "@angular/router";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [TasksBoardComponent, ToastComponent],
+  imports: [ToastComponent, RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'task-manager-angular18-ngrx';
+  title = signal('task-manager-angular18-ngrx') ;
 }
