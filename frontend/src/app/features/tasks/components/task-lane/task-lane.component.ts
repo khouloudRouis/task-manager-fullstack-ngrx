@@ -36,11 +36,10 @@ export class TaskLaneComponent implements OnInit {
   ngOnInit(){
    this.store.select(selectTasksByStatus(this.status)).subscribe(
     tasks => this.tasks = tasks
-   )
-    
+   );
   }
 
-  onDrop(event: CdkDragDrop<Task[]>) {
+  onDrop(event: CdkDragDrop<Task[]>): void {
     const movedTask = { ...event.item.data } as Task;
     if (movedTask.status !== this.status)
       movedTask.status = this.status; 
@@ -51,6 +50,7 @@ export class TaskLaneComponent implements OnInit {
   }
 
   onSave(event: Partial<Task>): void {
+    console.log(event)
     this.showTaskForm = !this.showTaskForm;
     if (event.id) {
       this.store.dispatch(updateTask({ task: event as Task }));
@@ -63,6 +63,7 @@ export class TaskLaneComponent implements OnInit {
           description: event.description || '',
           order: order
         };
+        console.log(payload)
         this.store.dispatch(addTask({ task: payload as Task }));
     }
   }
