@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, Signal, inject, signal, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, inject, OnInit } from '@angular/core';
 import { TaskCardComponent } from '../task-card/task-card.component';
 import { CommonModule } from '@angular/common';
 import { CdkDropList, CdkDragDrop, CdkDrag } from '@angular/cdk/drag-drop';
@@ -8,6 +8,7 @@ import { addTask, updateTask } from '../../store/task.actions';
 import { TaskFormComponent } from '../task-form/task-form.component';
 import { TaskUtils } from '../../../../shared/utils/task-util';
 import { selectTasksByStatus } from '../../store/task.selectors';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -24,9 +25,9 @@ import { selectTasksByStatus } from '../../store/task.selectors';
 export class TaskLaneComponent implements OnInit {
 
   @Input() status!: TaskStatus;
-  tasksByStatus: Signal<Task[]> = signal([]);
+  @Input() tasksByStatus$!:Observable<Task[]>;
 
-  connectedLaneIds = ['TODO', 'DOING', 'DONE'];
+  connectedLaneIds: TaskStatus[] = ['TODO', 'DOING', 'DONE'];
   tasks!: Task[];
   task: Task | undefined;
   showTaskForm = false;
@@ -50,7 +51,6 @@ export class TaskLaneComponent implements OnInit {
   }
 
   onSave(event: Partial<Task>): void {
-    console.log(event)
     this.showTaskForm = !this.showTaskForm;
     if (event.id) {
       this.store.dispatch(updateTask({ task: event as Task }));
@@ -63,7 +63,6 @@ export class TaskLaneComponent implements OnInit {
           description: event.description || '',
           order: order
         };
-        console.log(payload)
         this.store.dispatch(addTask({ task: payload as Task }));
     }
   }
@@ -77,4 +76,5 @@ export class TaskLaneComponent implements OnInit {
     this.showTaskForm = true
     this.task = undefined;
   }
+ 
 }

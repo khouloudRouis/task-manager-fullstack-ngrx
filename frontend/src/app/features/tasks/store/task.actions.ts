@@ -25,7 +25,7 @@ export const updateTaskSuccess = createAction(
 );
 export const updateTaskFailure = createAction(
   '[Tasks API] Update Task Failure',
-  props<{ error: string }>()
+  props<{ taskId: string; error: string }>()
 );
 
 export const addTask = createAction(
@@ -54,6 +54,6 @@ export const deleteTaskSuccess = createAction(
 
 export const deleteTaskFailure = createAction(
   '[Tasks API] Delete Task Failure',
-  props<{ error: string }>()
+  props<{ taskId: string; error: string }>()
 );
 

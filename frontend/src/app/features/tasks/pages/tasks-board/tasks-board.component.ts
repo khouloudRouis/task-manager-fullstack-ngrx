@@ -1,8 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { TaskLaneComponent } from '../../components/task-lane/task-lane.component';
 import { Store } from '@ngrx/store';
-import { TaskStatus } from '../../../../core/models/task'; 
+import { Task, TaskStatus } from '../../../../core/models/task'; 
 import { loadTasks } from '../../store/task.actions';
+import { selectTasksByStatus } from '../../store/task.selectors';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-tasks-board',
@@ -16,5 +18,8 @@ export class TasksBoardComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(loadTasks());
+  }
+   selectTasksByStatus$(status: TaskStatus): Observable<Task[]> {
+    return this.store.select(selectTasksByStatus(status));
   }
 }

@@ -7,7 +7,7 @@
   </div>
   <div cdkDropList [id]="status" [cdkDropListConnectedTo]="connectedLaneIds" (cdkDropListDropped)="onDrop($event)"
     class="flex flex-col gap-2 flex-1 overflow-y-auto min-h-0">
-    @for (task of tasks; track task.id) {
+    @for (task of tasksByStatus$ |async; track task.id) {
     <app-task-card cdkDrag [cdkDragData]="task" [task]="task" (edit)="onEditTask(task)"
       class="bg-white p-3 rounded shadow flex-shrink-0">
     </app-task-card>

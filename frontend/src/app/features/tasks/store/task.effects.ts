@@ -21,8 +21,11 @@ export class TaskEffects {
           tap(response => this.toastService.show(response.message, response.type)),
           map(response => TaskActions.loadTasksSuccess({ tasks: response?.data })),
           catchError(error => {
-            this.toastService.show(error.message, error.type);
-            return of(TaskActions.loadTasksFailure({ error: error.message }))})
+            const errorMessage = error?.error?.message || error?.message || 'Failed to load tasks';
+            const errorType = error?.error?.type || error?.type || 'ERROR';
+            this.toastService.show(errorMessage, errorType);
+            return of(TaskActions.loadTasksFailure({ error: errorMessage }));
+          })
         )
       )
     )
@@ -36,8 +39,10 @@ export class TaskEffects {
           tap(response => this.toastService.show(response.message, response.type)),
           map(() => TaskActions.deleteTaskSuccess({ taskId })),
           catchError(error => {
-            this.toastService.show(error.message, error.type);
-            return of(TaskActions.deleteTaskFailure({ error: error.message }));
+            const errorMessage = error?.error?.message || error?.message || 'Failed to delete task';
+            const errorType = error?.error?.type || error?.type || 'ERROR';
+            this.toastService.show(errorMessage, errorType);
+            return of(TaskActions.deleteTaskFailure({ taskId, error: errorMessage }));
           })
         )
       )
@@ -52,8 +57,10 @@ export class TaskEffects {
           tap(response => this.toastService.show(response.message, response.type)),
           map(response => TaskActions.addTaskSuccess({ taskId: response.data.id })),
           catchError(error => {
-            this.toastService.show(error.message, error.type);
-            return of(TaskActions.addTaskFailure({ error: error.message }));
+            const errorMessage = error?.error?.message || error?.message || 'Failed to add task';
+            const errorType = error?.error?.type || error?.type || 'ERROR';
+            this.toastService.show(errorMessage, errorType);
+            return of(TaskActions.addTaskFailure({ error: errorMessage }));
           })
         )
       )
@@ -68,8 +75,10 @@ export class TaskEffects {
           tap(response => this.toastService.show(response.message, response.type)),
           map(() => TaskActions.updateTaskSuccess({ task })),
           catchError(error => {
-            this.toastService.show(error.message, error.type);
-            return of(TaskActions.updateTaskFailure({ error: error.message }));
+            const errorMessage = error?.error?.message || error?.message || 'Failed to update task';
+            const errorType = error?.error?.type || error?.type || 'ERROR';
+            this.toastService.show(errorMessage, errorType);
+            return of(TaskActions.updateTaskFailure({ taskId: task.id, error: errorMessage }));
           })
         )
       )
