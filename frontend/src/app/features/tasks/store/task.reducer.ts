@@ -23,7 +23,6 @@ export const taskReducer = createReducer(
         ...state,
         tasks,
         loading: false,
-        error: null
     })),
 
     on(loadTasksFailure, (state, { error }) => ({
@@ -33,59 +32,63 @@ export const taskReducer = createReducer(
     })),
 
     on(addTask, (state, { task }) => {
-        return { ...state, tasks: [...state.tasks, task] };
+        return { ...state,
+             tasks: [...state.tasks, task],
+            loading: true,
+            error: null };
     }),
 
     on(addTaskSuccess, (state, { taskId }) => {
-        return { 
-            ...state, 
+        return {
+            ...state,
             tasks: state.tasks.map(t => !t.id ? { ...t, id: taskId } : t),
-            error: null // Clear any previous errors
+            loading: false,
         };
     }),
 
     on(addTaskFailure, (state, { error }) => {
-        // Remove the optimistically added task (the one without id)
-        // filter(t => t.id) keeps only tasks WITH id, removing the failed one
         return {
             ...state,
             tasks: state.tasks.filter(t => t.id),
+            loading: false,
             error
         };
     }),
 
     on(updateTask, (state, { task }) => {
         const previousTask = state.tasks.find(t => t.id === task.id);
-        
+
         return {
             ...state,
             tasks: state.tasks.map(t => t.id === task.id ? task : t),
-            previousTasks: previousTask 
+            previousTasks: previousTask
                 ? { ...state.previousTasks, [task.id]: previousTask }
-                : state.previousTasks
+                : state.previousTasks,
+            loading: true,
+            error : null
         };
     }),
 
     on(updateTaskSuccess, (state, { task }) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { [task.id]: _removed, ...remainingPreviousTasks } = state.previousTasks;
-        
-        return { 
-            ...state, 
+
+        return {
+            ...state,
             tasks: state.tasks.map(t => t.id === task.id ? { ...t, ...task } : t),
             previousTasks: remainingPreviousTasks,
-            error: null // Clear any previous errors
+            error: null
         };
     }),
 
-    on(updateTaskFailure, (state, { taskId, error }) => { 
+    on(updateTaskFailure, (state, { taskId, error }) => {
         const previousTask = state.previousTasks[taskId];
         if (!previousTask) {
             return { ...state, error };
         }
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { [taskId]: _removed, ...remainingPreviousTasks } = state.previousTasks;
-        
+
         return {
             ...state,
             tasks: state.tasks.map(t => t.id === taskId ? previousTask : t),
@@ -96,8 +99,8 @@ export const taskReducer = createReducer(
 
     on(deleteTask, (state, { taskId }) => {
         const previousTask = state.tasks.find(task => task.id === taskId);
-        return { 
-            ...state, 
+        return {
+            ...state,
             tasks: state.tasks.filter(task => task.id !== taskId),
             previousTasks: previousTask
                 ? { ...state.previousTasks, [taskId]: previousTask }
@@ -111,7 +114,7 @@ export const taskReducer = createReducer(
         return {
             ...state,
             previousTasks: remainingPreviousTasks,
-            error: null // Clear any previous errors
+            error: null
         };
     }),
 
@@ -122,9 +125,9 @@ export const taskReducer = createReducer(
         }
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { [taskId]: _removed, ...remainingPreviousTasks } = state.previousTasks;
-        
+
         return {
-            ...state, 
+            ...state,
             tasks: [...state.tasks, previousTask],
             previousTasks: remainingPreviousTasks,
             error
