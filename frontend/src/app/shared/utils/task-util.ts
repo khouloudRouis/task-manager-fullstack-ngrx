@@ -13,6 +13,6 @@ export class TaskUtils {
     if (!prev) return next!.order - 100;
     if (!next) return prev.order + 100;
     const newOrder = (prev.order + next.order) / 2;
-    return Math.round(newOrder );
+    return Math.round(newOrder);
   }
 }
