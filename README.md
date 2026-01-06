@@ -1,6 +1,6 @@
 # Task Manager
 
-> **Status**: 🚧 Work in Progress
+> **Status**: ✅ Ready for review
 
 A modern task management application built with Angular 18, Spring Boot 3.5.9, NgRx, and PostgreSQL. Features Docker containerization with Docker Compose for easy deployment and development.
 
@@ -34,6 +34,13 @@ A modern task management application built with Angular 18, Spring Boot 3.5.9, N
 
 Task Manager is a full-stack application for managing tasks using a Kanban board interface.
 
+**Recruiter Snapshot**
+- One-command launch: `docker-compose up -d` (frontend, backend, Postgres)
+- Runtime translations: live language switch without reload (SSR friendly)
+- Modern stack: Angular 18 + NgRx, Spring Boot 3.5, PostgreSQL 17, Docker
+- Frontend served via Nginx; backend packaged with multi-stage builds
+- Clean, layered architecture and standardized REST responses
+
 **Key Features:**
 - ✅ Task CRUD operations (Create, Read, Update, Delete)
 - ✅ Kanban board view with drag-and-drop support
@@ -41,6 +48,7 @@ Task Manager is a full-stack application for managing tasks using a Kanban board
 - ✅ User context management via header-based authentication
 - ✅ Real-time toast notifications
 - ✅ Responsive design with Tailwind CSS
+- ✅ Runtime language switching with persisted preference
 - ✅ Server-Side Rendering (SSR) support
 - ✅ Docker containerization with Docker Compose
 - ✅ RESTful API with standardized responses
@@ -713,8 +721,8 @@ npm run build
 
 ### Short Term
 - [x] Add authentication/authorization (using `x-user-id` header)
+- [x] Runtime i18n with language switcher
 - [ ] Complete frontend/backend unit tests
-- [ ] Add i18n (internationalization) support
 - [ ] Add E2E Tests
 - [ ] Add user management
 - [ ] Enhance task filtering and search
@@ -728,16 +736,6 @@ npm run build
 - [ ] Multi-user collaboration
 - [ ] Team workspaces
 - [ ] Analytics and reporting
-
-### Planned Features
-
-**Internationalization (i18n):**
-- 🚧 **Planned**: Adding i18n support to enable multi-language support for the frontend
-- Will support multiple languages and locales
-- Angular i18n integration planned
-
-**E2E Tests :**
-Adding E2E tests
 ---
 
 ## License
@@ -755,5 +753,5 @@ This project is licensed under the MIT License.
  
 ---
 
-**Note**: This README is a work in progress and will be updated as the project evolves. Feel free to expand any section with relevant details!
+**Note**: This README is kept current; reach out if you need a live demo link.
 
