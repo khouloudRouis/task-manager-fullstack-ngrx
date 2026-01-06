@@ -6,7 +6,6 @@ COPY package.json package-lock.json ./
 RUN npm install
 COPY . .
 RUN npm run build
-RUN ng test # generate coverage reports
 
 # Stage 2: Serve with Nginx
 FROM nginx:alpine
@@ -14,8 +13,6 @@ FROM nginx:alpine
 # Copy app
 COPY --from=build /app/dist/task-manager-angular18-ngrx/browser/* /usr/share/nginx/html/
 
-# Copy coverage
-COPY --from=build /app/coverage/task-manager-angular18-ngrx /usr/share/nginx/html/coverage
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

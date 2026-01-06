@@ -11,13 +11,16 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = signal('task-manager-angular18-ngrx') ;
-  readonly lang = [{label:'Français', code:'fr'},
-    {label:'English', code:'en'}, {label:'Deutsch', code:'de'}]
+  title = signal('task-manager-angular18-ngrx');
+  readonly languages = [
+    { label: 'Français', code: 'fr' },
+    { label: 'English', code: 'en' },
+    { label: 'Deutsch', code: 'de' }
+  ];
 
   private translate = inject(TranslateService);
 
   useLanguage(language: string): void {
-      this.translate.use(language);
+    this.translate.use(language);
   }
 }
