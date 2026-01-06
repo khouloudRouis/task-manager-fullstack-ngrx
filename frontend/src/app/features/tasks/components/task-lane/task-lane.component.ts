@@ -9,6 +9,7 @@ import { TaskFormComponent } from '../task-form/task-form.component';
 import { TaskUtils } from '../../../../shared/utils/task-util';
 import { selectTasksByStatus } from '../../store/task.selectors';
 import { Observable } from 'rxjs';
+import { TranslatePipe } from '@ngx-translate/core';
 
 
 @Component({
@@ -18,7 +19,8 @@ import { Observable } from 'rxjs';
     CdkDropList,
     CdkDrag,
     CommonModule,
-    TaskFormComponent],
+    TaskFormComponent,
+    TranslatePipe],
   templateUrl: './task-lane.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

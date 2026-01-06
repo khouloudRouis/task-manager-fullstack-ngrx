@@ -1,6 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ToastComponent } from './shared/components/toast/toast.component';
 import { RouterOutlet } from "@angular/router";
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -11,4 +12,12 @@ import { RouterOutlet } from "@angular/router";
 })
 export class AppComponent {
   title = signal('task-manager-angular18-ngrx') ;
+  readonly lang = [{label:'Français', code:'fr'},
+    {label:'English', code:'en'}, {label:'Deutsch', code:'de'}]
+
+  private translate = inject(TranslateService);
+
+  useLanguage(language: string): void {
+      this.translate.use(language);
+  }
 }

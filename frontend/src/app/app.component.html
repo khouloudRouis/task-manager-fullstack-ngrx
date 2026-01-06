@@ -1,5 +1,17 @@
+<div class="h-full w-full">
+  <div class="absolute bottom-4 left-0 w-full flex justify-center gap-4">
+    @for (item of lang; track $index) {
+    <a href="#" (click)="useLanguage(item.code)"
 
-<div class="h-screen w-full">
-  <router-outlet/>
+      class="text-gray-500 font-semibold hover:text-gray-800 transition-colors">
+      {{item.label}}
+    </a>
+    }
+
+  </div>
+
+
+  <router-outlet />
+
   <app-toast></app-toast>
 </div>

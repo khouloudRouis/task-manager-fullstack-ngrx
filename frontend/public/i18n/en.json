@@ -1,0 +1,10 @@
+{
+  "TITLE": "title",
+  "DESCRIPTION": "Description",
+  "SAVE": "Save",
+  "CANCEl": "Cancel",
+  "TODO":"TODO",
+  "DOING":"In Progress",
+  "DONE":"Done",
+  "ADD": "Add"
+}

@@ -2,12 +2,13 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Task, TaskStatus } from '../../../../core/models/task';
+import { TranslatePipe } from '@ngx-translate/core';
 
 
 @Component({
   selector: 'app-task-form',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule,   TranslatePipe],
   templateUrl: './task-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -23,6 +24,7 @@ export class TaskFormComponent implements OnChanges {
     title: new FormControl('', Validators.required),
     description: new FormControl('', Validators.required),
   });
+ 
 
   ngOnChanges() {
     this.taskForm.reset();

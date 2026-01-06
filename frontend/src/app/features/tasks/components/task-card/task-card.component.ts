@@ -17,6 +17,7 @@ export class TaskCardComponent {
   
   private readonly store = inject(Store);
 
+
   onDelete() {
    this.store.dispatch(deleteTask({ taskId: this.task.id }));
   }
